@@ -1,0 +1,30 @@
+patch:
+  style:
+    color_scheme: psionics
+    font_face: 'Lucida Grande'
+    font_point: 16
+    label_font_point: 14
+    comment_font_point: 14
+    border_height: 0
+    border_width: 0
+    spacing: 10
+    line_spacing: 5
+    corner_radius: 10
+    hilited_corner_radius: 0
+    inline_preedit: true
+    horizontal: false
+    text_orientation: horizontal
+
+  preset_color_schemes:
+    psionics:
+      name: psionics
+      text_color: 0xc2c2c2
+      back_color: 0x444444
+      candidate_text_color: 0xeeeeee
+      hilited_text_color: 0xeeeeee
+      hilited_back_color: 0x444444
+      hilited_candidate_label_color: 0xfafafa
+      hilited_candidate_text_color: 0xfafafa
+      hilited_candidate_back_color: 0xd4bc00
+      comment_text_color: 0x808080
+      hilited_comment_text_color: 0x444444

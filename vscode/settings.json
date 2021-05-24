@@ -1,0 +1,139 @@
+{
+    //update settings
+    "update.mode": "manual",
+    "update.showReleaseNotes": false,
+
+    //workbench settings
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "One Dark Pro",
+    "workbench.activityBar.visible": false,
+    "workbench.startupEditor": "newUntitledFile",
+    "workbench.editor.showTabs": false,
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.untitled.hint": "hidden",
+    "workbench.editorAssociations": [
+        {
+            "viewType": "jupyter.notebook.ipynb",
+            "filenamePattern": "*.ipynb"
+        }
+    ],
+
+    //explorer settings
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+
+    //editor settings
+    "editor.fontSize": 13,
+    "editor.minimap.enabled": false,
+    "editor.hideCursorInOverviewRuler": true,
+    "editor.overviewRulerBorder": false,
+    "editor.formatOnSave": false,
+    "editor.quickSuggestions": true,
+    "editor.snippetSuggestions": "inline",
+    "editor.suggest.showSnippets": true,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+
+    //diffeditor settings
+    "diffEditor.renderSideBySide": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+
+    //file settings
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+
+    //terminal settings
+    "terminal.integrated.fontSize": 13,
+    "terminal.integrated.copyOnSelection": true,
+    "terminal.integrated.rightClickBehavior": "paste",
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.macOptionIsMeta": true,
+
+    //debug settings
+    "debug.console.fontSize": 13,
+    "debug.console.closeOnEnd": true,
+    "debug.onTaskErrors": "abort",
+
+    //breadcrumbs settings
+    "breadcrumbs.enabled": false,
+
+    //timeline settings
+    "timeline.pageOnScroll": true,
+
+    //extensions settings
+    "extensions.autoUpdate": false,
+
+    //oneDarkPro settings
+    "oneDarkPro.markdownStyle": false,
+
+    //vim settings
+    "vim.useCtrlKeys": true,
+    "vim.useSystemClipboard": true,
+    "vim.hlsearch": true,
+    "vim.highlightedyank.enable": true,
+    "vim.searchHighlightColor": "rgba(150, 150, 255, 0.3)",
+    "vim.handleKeys": {
+        "<C-n>": false,
+        "<C-p>": false
+    },
+
+    //bookmarks settings
+    "bookmarks.label.suggestion": "suggestWhenSelectedOrLineWhenNoSelected",
+    "bookmarks.navigateThroughAllFiles": true,
+    "bookmarks.showCommandsInContextMenu": false,
+    "bookmarks.saveBookmarksInProject": true,
+
+    //bracket pair colorizer
+    "bracket-pair-colorizer-2.excludedLanguages": [
+        "markdown"
+    ],
+
+    //markdown settings
+    "markdown-toc.updateOnSave": false,
+    "markdown-pdf.highlightStyle": "github-gist.css",
+    "markdown-pdf.executablePath": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    "markdownlint.config": {
+        "MD029": {
+            "style": "ordered"
+        },
+        "MD033": false
+    },
+
+    //c_cpp settings
+    "C_Cpp.default.cStandard": "c11",
+    "C_Cpp.default.cppStandard": "c++14",
+    "C_Cpp.default.intelliSenseMode": "clang-arm64",
+    "C_Cpp.default.browse.limitSymbolsToIncludedHeaders": true,
+    "C_Cpp.default.compilerPath": "/usr/bin/clang",
+    "C_Cpp.errorSquiggles": "Disabled",
+    "C_Cpp.intelliSenseCacheSize": 0,
+    "C_Cpp.intelliSenseEngine": "Default",
+    "C_Cpp.intelliSenseEngineFallback": "Disabled",
+    "C_Cpp.default.includePath": [
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
+        "/Library/Developer/CommandLineTools/usr/include",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+    ],
+    "C_Cpp.default.browse.path": [
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
+        "/Library/Developer/CommandLineTools/usr/include",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
+    ],
+
+    //python settings
+    "python.showStartPage": false,
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Args": [
+        "--max-line-length=128"
+    ],
+    "python.formatting.provider": "yapf",
+    "python.formatting.yapfArgs": [
+        "--style", "{column_limit: 150}"
+    ],
+    "python.pythonPath": "/Library/Developer/CommandLineTools/usr/bin/python3"
+}
