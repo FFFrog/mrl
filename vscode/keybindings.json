@@ -1,6 +1,6 @@
 // Place your key bindings in this file to override the defaults
 [
-    //workbench settings
+    //view settings
     {
         "key": "cmd+k cmd+x",
         "command": "workbench.view.extensions",
@@ -543,7 +543,11 @@
         "when": "textCompareEditorVisible"
     },
 
-    //other settings
+    //system settings
+    {
+        "key": "cmd+r",
+        "command": "workbench.action.openRecent"
+    },
     {
         "key": "ctrl+w",
         "command": "-workbench.action.switchWindow"
