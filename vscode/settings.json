@@ -135,5 +135,15 @@
     "python.formatting.yapfArgs": [
         "--style", "{column_limit: 150}"
     ],
-    "python.pythonPath": "/Library/Developer/CommandLineTools/usr/bin/python3"
+    "python.venvPath": "/opt/homebrew/Cellar/pyenv/2.0.0/versions",
+    "python.venvFolders": [
+        "envs",
+        ".pyenv",
+        ".direnv",
+        ".env"
+    ],
+    "python.pythonPath": "/opt/homebrew/Cellar/pyenv/2.0.0/versions/3.9.5/bin/python",
+    "python.linting.pylintPath": "/opt/homebrew/Cellar/pyenv/2.0.0/versions/3.9.5/envs/dev_3.9.5/bin/pylint",
+    "python.linting.flake8Path": "/opt/homebrew/Cellar/pyenv/2.0.0/versions/3.9.5/envs/dev_3.9.5/bin/flake8",
+    "python.formatting.yapfPath": "/opt/homebrew/Cellar/pyenv/2.0.0/versions/3.9.5/envs/dev_3.9.5/bin/yapf"
 }
