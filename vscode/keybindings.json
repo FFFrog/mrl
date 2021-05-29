@@ -210,12 +210,6 @@
         "command": "workbench.action.focusActiveEditorGroup"
     },
 
-    //editor settings
-    {
-        "key": "cmd+k w",
-        "command": "workbench.action.closeActiveEditor"
-    },
-
     //terminal settings
     {
         "key": "alt+cmd+t",
