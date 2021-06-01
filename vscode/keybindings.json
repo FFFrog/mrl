@@ -537,6 +537,16 @@
         "when": "textCompareEditorVisible"
     },
 
+    //build settings
+    {
+        "key": "cmd+b",
+        "command": "workbench.action.tasks.build"
+    },
+    {
+        "key": "shift+cmd+b",
+        "command": "-workbench.action.tasks.build"
+    },
+
     //system settings
     {
         "key": "cmd+r",

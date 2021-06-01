@@ -1,0 +1,40 @@
+{
+    "version": 4,
+    "configurations": [
+        {
+            "name": "Mac",
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "macos-clang-arm64",
+            "compilerPath": "/usr/bin/clang",
+            "defines": [
+                "_DEBUG",
+                "UNICODE"
+            ],
+            "includePath": [
+                "/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
+                "/Library/Developer/CommandLineTools/usr/include",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks",
+                "${workspaceFolder}/acm/**"
+            ],
+            "macFrameworkPath": [
+                "/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
+                "/Library/Developer/CommandLineTools/usr/include",
+                "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks",
+                "${workspaceFolder}/acm/**"
+            ],
+            "browse": {
+                "path": [
+                    "/Library/Developer/CommandLineTools/usr/lib/clang/12.0.5/include",
+                    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
+                    "/Library/Developer/CommandLineTools/usr/include",
+                    "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks",
+                    "${workspaceFolder}/acm"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ]
+}
