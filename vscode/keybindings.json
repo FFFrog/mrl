@@ -2,6 +2,14 @@
 [
     //view settings
     {
+        "key": "shift+cmd+b",
+        "command": "workbench.action.toggleSidebarVisibility"
+    },
+    {
+        "key": "cmd+b",
+        "command": "-workbench.action.toggleSidebarVisibility"
+    },
+    {
         "key": "shift+cmd+k",
         "command": "-editor.action.deleteLines",
         "when": "textInputFocus && !editorReadonly"
@@ -437,6 +445,16 @@
         "key": "ctrl+n",
         "command": "workbench.action.compareEditor.nextChange",
         "when": "textCompareEditorVisible"
+    },
+
+    //build settings
+    {
+        "key": "cmd+b",
+        "command": "workbench.action.tasks.build"
+    },
+    {
+        "key": "shift+cmd+b",
+        "command": "-workbench.action.tasks.build"
     },
 
     //system settings
