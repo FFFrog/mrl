@@ -413,7 +413,7 @@
         "command": "editor.action.indentationToSpaces"
     },
     {
-        "key": "ctrl+shift+c",
+        "key": "ctrl+shift+l",
         "command": "workbench.action.editor.changeEOL"
     },
 
