@@ -2,70 +2,17 @@
 [
     //view settings
     {
-        "key": "cmd+k cmd+x",
-        "command": "workbench.view.extensions",
-        "when": "viewContainer.workbench.view.extensions.enabled"
+        "key": "shift+cmd+k",
+        "command": "-editor.action.deleteLines",
+        "when": "textInputFocus && !editorReadonly"
     },
     {
-        "key": "shift+cmd+x",
-        "command": "-workbench.view.extensions",
-        "when": "viewContainer.workbench.view.extensions.enabled"
-    },
-    {
-        "key": "cmd+k cmd+k",
+        "key": "shift+cmd+k",
         "command": "workbench.action.openGlobalKeybindings"
     },
     {
         "key": "cmd+k cmd+s",
         "command": "-workbench.action.openGlobalKeybindings"
-    },
-    {
-        "key": "cmd+k cmd+b",
-        "command": "workbench.action.toggleSidebarVisibility"
-    },
-    {
-        "key": "cmd+b",
-        "command": "-workbench.action.toggleSidebarVisibility"
-    },
-    {
-        "key": "cmd+k cmd+e",
-        "command": "workbench.view.explorer",
-        "when": "viewContainer.workbench.view.explorer.enabled"
-    },
-    {
-        "key": "shift+cmd+e",
-        "command": "-workbench.view.explorer",
-        "when": "viewContainer.workbench.view.explorer.enabled"
-    },
-    {
-        "key": "cmd+k cmd+s",
-        "command": "workbench.view.search",
-        "when": "workbench.view.search.active"
-    },
-    {
-        "key": "shift+cmd+f",
-        "command": "-workbench.view.search",
-        "when": "workbench.view.search.active"
-    },
-    {
-        "key": "cmd+k cmd+g",
-        "command": "workbench.view.scm",
-        "when": "workbench.scm.active"
-    },
-    {
-        "key": "ctrl+shift+g",
-        "command": "-workbench.view.scm",
-        "when": "workbench.scm.active"
-    },
-    {
-        "key": "cmd+k cmd+d",
-        "command": "workbench.view.debug",
-        "when": "viewContainer.workbench.view.debug.enabled"
-    },
-    {
-        "key": "shift+cmd+d",
-        "command": "-workbench.view.debug",
-        "when": "viewContainer.workbench.view.debug.enabled"
     },
 
     //group settings
@@ -286,46 +233,6 @@
         "command": "workbench.action.terminal.kill"
     },
 
-    //panel settings
-    {
-        "key": "alt+cmd+o",
-        "command": "workbench.action.output.toggleOutput",
-        "when": "workbench.panel.output.active"
-    },
-    {
-        "key": "shift+cmd+u",
-        "command": "-workbench.action.output.toggleOutput",
-        "when": "workbench.panel.output.active"
-    },
-    {
-        "key": "alt+cmd+b",
-        "command": "workbench.debug.action.toggleRepl",
-        "when": "workbench.panel.repl.view.active"
-    },
-    {
-        "key": "shift+cmd+y",
-        "command": "-workbench.debug.action.toggleRepl",
-        "when": "workbench.panel.repl.view.active"
-    },
-    {
-        "key": "alt+cmd+m",
-        "command": "workbench.actions.view.problems",
-        "when": "workbench.panel.markers.view.active"
-    },
-    {
-        "key": "shift+cmd+m",
-        "command": "-workbench.actions.view.problems",
-        "when": "workbench.panel.markers.view.active"
-    },
-    {
-        "key": "alt+cmd+u",
-        "command": "workbench.action.togglePanel"
-    },
-    {
-        "key": "cmd+j",
-        "command": "-workbench.action.togglePanel"
-    },
-
     //codescan settings
     {
         "key": "alt+w",
@@ -467,11 +374,6 @@
         "when": "editorLangId == 'markdown'"
     },
     {
-        "key": "ctrl+cmd+.",
-        "command": "markdownlint.fixAll",
-        "when": "editorLangId == 'markdown'"
-    },
-    {
         "key": "cmd+.",
         "command": "markdownlint.fixAll",
         "when": "editorLangId == 'markdown'"
@@ -521,7 +423,7 @@
 
     //git settings
     {
-        "key": "cmd+m g",
+        "key": "ctrl+alt+c",
         "command": "git.openChange"
     },
 
@@ -535,16 +437,6 @@
         "key": "ctrl+n",
         "command": "workbench.action.compareEditor.nextChange",
         "when": "textCompareEditorVisible"
-    },
-
-    //build settings
-    {
-        "key": "cmd+b",
-        "command": "workbench.action.tasks.build"
-    },
-    {
-        "key": "shift+cmd+b",
-        "command": "-workbench.action.tasks.build"
     },
 
     //system settings
