@@ -7,6 +7,7 @@
     "workbench.iconTheme": "material-icon-theme",
     "workbench.colorTheme": "One Dark Pro",
     "workbench.activityBar.visible": false,
+    "workbench.startupEditor": "none",
     "workbench.editor.showTabs": false,
     "workbench.editor.enablePreview": false,
     "workbench.editor.untitled.hint": "hidden",
