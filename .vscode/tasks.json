@@ -28,10 +28,7 @@
             "problemMatcher": [
                 "$gcc"
             ],
-            "group": {
-                "kind": "test",
-                "isDefault": true
-            }
+            "group": "build"
         },
         {
             "label": "C++",
