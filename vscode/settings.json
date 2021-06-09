@@ -65,6 +65,10 @@
     //oneDarkPro settings
     "oneDarkPro.markdownStyle": false,
 
+    //git settings
+    "git.detectSubmodules": false,
+    "git.detectSubmodulesLimit": 30,
+
     //vim settings
     "vim.useCtrlKeys": true,
     "vim.useSystemClipboard": true,
