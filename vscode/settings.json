@@ -93,6 +93,7 @@
 
     //markdown settings
     "markdown-toc.updateOnSave": false,
+    "markdown-preview-enhanced.breakOnSingleNewLine": false,
     "markdown-pdf.highlightStyle": "github-gist.css",
     "markdown-pdf.executablePath": "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     "markdownlint.config": {
