@@ -148,6 +148,7 @@
     "python.formatting.yapfArgs": [
         "--style", "{column_limit: 150}"
     ],
+    "python.terminal.activateEnvironment": false,
     "python.envFile": "${workspaceFolder}/.vscode/.env",
     "python.defaultInterpreterPath": "/opt/homebrew/Cellar/pyenv/2.0.0/versions/3.9.5/bin/python"
 }
