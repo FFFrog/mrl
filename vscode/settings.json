@@ -3,6 +3,9 @@
     "update.mode": "manual",
     "update.showReleaseNotes": false,
 
+    //security
+    "security.workspace.trust.enabled": false,
+
     //workbench settings
     "workbench.iconTheme": "material-icon-theme",
     "workbench.colorTheme": "One Dark Pro",
@@ -11,12 +14,9 @@
     "workbench.editor.showTabs": false,
     "workbench.editor.enablePreview": false,
     "workbench.editor.untitled.hint": "hidden",
-    "workbench.editorAssociations": [
-        {
-            "viewType": "jupyter.notebook.ipynb",
-            "filenamePattern": "*.ipynb"
-        }
-    ],
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter.notebook.ipynb"
+    },
 
     //explorer settings
     "explorer.confirmDelete": false,
@@ -30,6 +30,7 @@
     "editor.formatOnSave": false,
     "editor.quickSuggestions": true,
     "editor.snippetSuggestions": "inline",
+    "editor.suggest.preview": true,
     "editor.suggest.showSnippets": true,
     "editor.suggest.snippetsPreventQuickSuggestions": false,
 
@@ -148,5 +149,5 @@
         "--style", "{column_limit: 150}"
     ],
     "python.envFile": "${workspaceFolder}/.vscode/.env",
-    "python.pythonPath": "/opt/homebrew/Cellar/pyenv/2.0.0/versions/3.9.5/bin/python"
+    "python.defaultInterpreterPath": "/opt/homebrew/Cellar/pyenv/2.0.0/versions/3.9.5/bin/python"
 }
