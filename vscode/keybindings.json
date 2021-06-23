@@ -1,5 +1,17 @@
 // Place your key bindings in this file to override the defaults
 [
+    //list settings
+    {
+        "key": "ctrl+j",
+        "command": "list.focusDown",
+        "when": "listFocus && !inputFocus"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "list.focusUp",
+        "when": "listFocus && !inputFocus"
+    },
+
     //view settings
     {
         "key": "shift+cmd+b",
