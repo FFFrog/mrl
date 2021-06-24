@@ -1,17 +1,5 @@
 // Place your key bindings in this file to override the defaults
 [
-    //list settings
-    {
-        "key": "ctrl+j",
-        "command": "list.focusDown",
-        "when": "listFocus && !inputFocus"
-    },
-    {
-        "key": "ctrl+k",
-        "command": "list.focusUp",
-        "when": "listFocus && !inputFocus"
-    },
-
     //view settings
     {
         "key": "shift+cmd+b",
@@ -482,6 +470,28 @@
         "key": "ctrl+f5",
         "command": "-workbench.action.debug.run",
         "when": "debuggersAvailable && debugState != 'initializing'"
+    },
+
+    //search settings
+    {
+        "key": "ctrl+j",
+        "command": "search.action.focusNextSearchResult",
+        "when": "hasSearchResult && searchViewletVisible || inSearchEditor && searchViewletVisible"
+    },
+    {
+        "key": "f4",
+        "command": "-search.action.focusNextSearchResult",
+        "when": "hasSearchResult || inSearchEditor"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "search.action.focusPreviousSearchResult",
+        "when": "hasSearchResult && searchViewletVisible || inSearchEditor && searchViewletVisible"
+    },
+    {
+        "key": "shift+f4",
+        "command": "-search.action.focusPreviousSearchResult",
+        "when": "hasSearchResult || inSearchEditor"
     },
 
     //system settings
