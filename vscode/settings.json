@@ -62,6 +62,7 @@
 
     //extensions settings
     "extensions.autoUpdate": false,
+    "extensions.ignoreRecommendations": true,
 
     //oneDarkPro settings
     "oneDarkPro.markdownStyle": false,
