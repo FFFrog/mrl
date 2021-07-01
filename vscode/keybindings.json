@@ -519,6 +519,11 @@
         "command": "workbench.action.openRecent"
     },
     {
+        "key": "cmd+w",
+        "command": "-workbench.action.closeWindow",
+        "when": "!editorIsOpen && !multipleEditorGroups"
+    },
+    {
         "key": "ctrl+w",
         "command": "-workbench.action.switchWindow"
     }
