@@ -10,7 +10,10 @@
     - [创建flavor](#创建flavor)
     - [创建虚拟机](#创建虚拟机)
   - [neutron命令](#neutron命令)
-    - [创建网络](#创建网络)
+  - [创建网络](#创建网络)
+    - [创建租户网络](#创建租户网络)
+    - [创建外部网络](#创建外部网络)
+    - [创建路由](#创建路由)
   - [OVS命令](#ovs命令)
     - [ovs-vsctl](#ovs-vsctl)
     - [ovs-appctl](#ovs-appctl)
@@ -83,9 +86,29 @@ openstack server create --image centos --flavor large --nic net-id=mrl centos
 
 ## 创建网络
 
+### 创建租户网络
+
 ```shell
-openstack network create mrl --external
+openstack network create mrl --internal
 openstack subnet create --network mrl --gateway 192.168.188.1 --subnet-range 192.168.188.0/24 mrl_subnet
+```
+
+### 创建外部网络
+
+```shell
+openstack network create --external --share --provider-network-type flat \
+                                    --provider-physical-network o_provider mrl_external
+openstack subnet create --no-dhcp --subnet-range 192.168.2.0/24 --gateway 192.168.2.1 --ip-version 4 \
+                        --network mrl_external --allocation-pool start=192.168.2.130,end=192.168.2.132 \
+                        --dns-nameserver 114.114.115.115 mrl_external_subnet
+```
+
+### 创建路由
+
+```shell
+openstack router create mrl
+openstack router set --external-gateway mrl_external mrl
+neutron router-interface-add 117b5778-2cee-448d-931c-ad39dff05584 7bd309e0-7de9-431e-b56d-ee24355320f1
 ```
 
 ## OVS命令
