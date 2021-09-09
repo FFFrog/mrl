@@ -14,9 +14,6 @@
     "workbench.editor.showTabs": false,
     "workbench.editor.enablePreview": false,
     "workbench.editor.untitled.hint": "hidden",
-    "workbench.editorAssociations": {
-        "*.ipynb": "jupyter-notebook"
-    },
 
     //explorer settings
     "explorer.confirmDelete": false,
@@ -30,6 +27,7 @@
     "editor.formatOnSave": false,
     "editor.quickSuggestions": true,
     "editor.snippetSuggestions": "inline",
+    "editor.bracketPairColorization.enabled": true,
     "editor.suggest.preview": true,
     "editor.suggest.showSnippets": true,
     "editor.suggest.snippetsPreventQuickSuggestions": false,
@@ -89,11 +87,6 @@
     "bookmarks.navigateThroughAllFiles": true,
     "bookmarks.showCommandsInContextMenu": false,
     "bookmarks.saveBookmarksInProject": true,
-
-    //bracket pair colorizer
-    "bracket-pair-colorizer-2.excludedLanguages": [
-        "markdown"
-    ],
 
     //markdown settings
     "markdown-toc.updateOnSave": false,
