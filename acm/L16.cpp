@@ -1,13 +1,3 @@
-//**********************************************************************************************
-//
-//    Filename:         3SumClosest.cpp
-//    Author:           lijiawei
-//    Create at:        2021/06/03 14:13:04
-//    Link:             https://leetcode-cn.com/problems/3sum-closest/
-//    Description:      3Sum Closest
-//
-//**********************************************************************************************
-
 #include <iostream>
 #include <vector>
 #include <algorithm>

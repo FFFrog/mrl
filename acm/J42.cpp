@@ -1,13 +1,3 @@
-//**********************************************************************************************
-//
-//    Filename:         consecutiveSubarraysMaximumSum.cpp
-//    Author:           lijiawei
-//    Create at:        2021/06/03 15:29:37
-//    Link:             https://leetcode-cn.com/problems/lian-xu-zi-shu-zu-de-zui-da-he-lcof/
-//    Description:      Consecutive Subarray Maximum Sum
-//
-//**********************************************************************************************
-
 #include <iostream>
 #include <vector>
 

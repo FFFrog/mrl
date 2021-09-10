@@ -1,13 +1,3 @@
-//**********************************************************************************************
-//
-//    Filename:         bestSightseeingPair.cpp
-//    Author:           lijiawei
-//    Create at:        2021/06/02 15:19:39
-//    Link:             https://leetcode-cn.com/problems/best-sightseeing-pair/
-//    Description:      Best Sightseeing Pair
-//
-//**********************************************************************************************
-
 #include <iostream>
 #include <vector>
 #include <algorithm>
