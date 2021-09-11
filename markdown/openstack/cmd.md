@@ -97,9 +97,9 @@ openstack subnet create --network mrl --gateway 192.168.188.1 --subnet-range 192
 
 ```shell
 openstack network create --external --share --provider-network-type flat \
-                                    --provider-physical-network o_provider mrl_external
-openstack subnet create --no-dhcp --subnet-range 192.168.2.0/24 --gateway 192.168.2.1 --ip-version 4 \
-                        --network mrl_external --allocation-pool start=192.168.2.130,end=192.168.2.132 \
+                                    --provider-physical-network provider mrl_external
+openstack subnet create --no-dhcp --subnet-range 192.168.1.0/24 --gateway 192.168.1.1 --ip-version 4 \
+                        --network mrl_external --allocation-pool start=192.168.1.211,end=192.168.1.211 \
                         --dns-nameserver 114.114.115.115 mrl_external_subnet
 ```
 
@@ -108,7 +108,7 @@ openstack subnet create --no-dhcp --subnet-range 192.168.2.0/24 --gateway 192.16
 ```shell
 openstack router create mrl
 openstack router set --external-gateway mrl_external mrl
-neutron router-interface-add 117b5778-2cee-448d-931c-ad39dff05584 7bd309e0-7de9-431e-b56d-ee24355320f1
+neutron router-interface-add ROUTER SUBNET
 ```
 
 ## OVS命令
