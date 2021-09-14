@@ -369,17 +369,7 @@
     },
     {
         "key": "ctrl+cmd+t",
-        "command": "extension.updateMarkdownToc",
-        "when": "editorLangId == 'markdown'"
-    },
-    {
-        "key": "ctrl+m t",
-        "command": "-extension.updateMarkdownToc"
-    },
-    {
-        "key": "ctrl+cmd+e",
-        "command": "extension.markdown-pdf.pdf",
-        "when": "editorLangId == 'markdown'"
+        "command": "markdown-preview-enhanced.createTOC"
     },
     {
         "key": "cmd+.",
