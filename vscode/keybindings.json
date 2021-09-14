@@ -421,6 +421,16 @@
 
     //git settings
     {
+        "key": "ctrl+alt+r",
+        "command": "git.revertSelectedRanges",
+        "when": "isInDiffEditor"
+    },
+    {
+        "key": "cmd+k cmd+r",
+        "command": "-git.revertSelectedRanges",
+        "when": "isInDiffEditor"
+    },
+    {
         "key": "ctrl+alt+c",
         "command": "git.openChange"
     },
