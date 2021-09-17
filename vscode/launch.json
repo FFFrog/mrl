@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C",
+            "type": "cppdbg",
+            "request": "launch",
+            "args": [],
+            "environment": [],
+            "cwd": "${workspaceFolder}",
+            "program": "${workspaceFolder}/linux/vmlinux",
+            "MIMode": "gdb",
+            "miDebuggerServerAddress": "127.0.0.1:1234",
+            "targetArchitecture": "arm64",
+            "stopAtEntry": false,
+            "externalConsole": false,
+            "sourceFileMap":{
+                "/root/linux": "/root/Git.d/c/linux"
+            }
+        }
+    ]
+}
