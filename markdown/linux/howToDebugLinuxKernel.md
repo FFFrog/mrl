@@ -26,11 +26,12 @@
     配置完成后在当前目录生成 `.config` 文件
 
     ```shell
-    grep CONFIG_DEBUG_INFO .config
+    grep -E "CONFIG_DEBUG_INFO|CONFIG_GDB_SCRIPTS" .config
     ```
 
     ```text
     CONFIG_DEBUG_INFO=y
+    CONFIG_GDB_SCRIPTS=y
     ```
 
 3. 编译内核
