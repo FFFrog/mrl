@@ -99,7 +99,7 @@ openstack subnet create --network mrl --gateway 192.168.188.1 --subnet-range 192
 openstack network create --external --share --provider-network-type flat \
                                     --provider-physical-network provider mrl_external
 openstack subnet create --no-dhcp --subnet-range 192.168.1.0/24 --gateway 192.168.1.1 --ip-version 4 \
-                        --network mrl_external --allocation-pool start=192.168.1.211,end=192.168.1.211 \
+                        --network mrl_external --allocation-pool start=192.168.1.100,end=192.168.1.130 \
                         --dns-nameserver 114.114.115.115 mrl_external_subnet
 ```
 
