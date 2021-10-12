@@ -47,6 +47,11 @@
     "terminal.integrated.showLinkHover": false,
     "terminal.integrated.cursorBlinking": true,
     "terminal.integrated.macOptionIsMeta": true,
+    "terminal.integrated.env.linux": {
+        "GOPROXY": "https://goproxy.cn,direct",
+        "GOSUMDB": "sum.golang.google.cn",
+        "GO111MODULE": "on"
+    },
 
     //debug settings
     "debug.onTaskErrors": "abort",
@@ -128,6 +133,25 @@
         "/Library/Developer/CommandLineTools/usr/include",
         "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
     ],
+
+    //go settings
+    "go.gopath": "~/.go",
+    "go.toolsGopath": "~/.go",
+    "go.toolsEnvVars": {
+        "GOPROXY": "https://goproxy.cn,direct",
+        "GOSUMDB": "sum.golang.google.cn",
+        "GO111MODULE": "on"
+    },
+    "go.editorContextMenuCommands": {
+        "toggleTestFile": false,
+        "addTags": false,
+        "testAtCursor": false,
+        "generateTestForFunction": false,
+        "addImport": false,
+        "testCoverage": false,
+        "playground": false,
+        "debugTestAtCursor": false
+    },
 
     //python settings
     "python.linting.enabled": true,
