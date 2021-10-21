@@ -137,7 +137,9 @@
 1. qemu 启动 kernel
 
     ```shell
-    qemu-kvm -s -S\
+    #!/bin/bash
+
+    qemu-kvm -s -S \
              -smp 2 \
              -cpu cortex-a57 \
              -m size=1024M \
@@ -145,6 +147,7 @@
              -kernel Image \
              -initrd rootfs.img \
              -machine virt,virtualization=true,gic-version=3 \
+             -net nic -net tap,ifname=tap0,script=no,downscript=no \
              --append "nokaslr console=ttyAMA0 rdinit=/linuxrc"
     ```
 
