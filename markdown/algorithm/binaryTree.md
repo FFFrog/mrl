@@ -21,11 +21,12 @@ TreeNode* buildTreebyRecursionOne(int index = 0)
 // 迭代
 TreeNode* buildTreebyIteration()
 {
-    int i = 1;
     queue<TreeNode *> que;
+    TreeNode* root = nullptr;
+    int i = 1;
 
     if (!vRoot.empty()) {
-        TreeNode* root = new TreeNode(stoi(vRoot[0]));
+        root = new TreeNode(stoi(vRoot[0]));
         que.push(tRoot);
 
         while (i < vRoot.size()) {
@@ -37,6 +38,8 @@ TreeNode* buildTreebyIteration()
             que.push(root->right);
         }
     }
+
+    return root;
 }
 ```
 
@@ -87,8 +90,6 @@ void preOrderTraversalbyIteration(TreeNode* root)
         st.pop();
         root = node->right;
     }
-
-    return ans;
 }
 
 void inOrderTraversalbyIteration(TreeNode* root)
@@ -106,8 +107,6 @@ void inOrderTraversalbyIteration(TreeNode* root)
         // 中序遍历
         root = node->right;
     }
-
-    return ans;
 }
 
 void postOrderTraversalbyIteration(TreeNode* root)
@@ -129,7 +128,5 @@ void postOrderTraversalbyIteration(TreeNode* root)
         } else
             root = node->right;
     }
-
-    return ans;
 }
 ```
