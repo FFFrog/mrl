@@ -8,7 +8,7 @@
 
     //workbench settings
     "workbench.iconTheme": "material-icon-theme",
-    "workbench.colorTheme": "One Dark Pro",
+    "workbench.colorTheme": "One Dark Pro Darker",
     "workbench.activityBar.visible": false,
     "workbench.startupEditor": "none",
     "workbench.editor.showTabs": false,
