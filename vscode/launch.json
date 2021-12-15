@@ -15,7 +15,7 @@
             "stopAtEntry": false,
             "externalConsole": false,
             "sourceFileMap":{
-                "/root/linux": "/root/Git.d/c/linux"
+                "/root/Git.d/c/linux": "/root/Git.d/c/linux/linux"
             }
         }
     ]

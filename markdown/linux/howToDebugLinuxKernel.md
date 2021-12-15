@@ -58,14 +58,14 @@
 1. 下载toolbox代码，并解压
 
     ```shell
-    wget http://busybox.net/downloads/busybox-1.34.0.tar.bz2 --output busybox-1.34.0.tar.bz2
+    wget http://busybox.net/downloads/busybox-1.34.0.tar.bz2
     tar -jxvf busybox-1.34.0.tar.bz2
     ```
 
-2. 配置toolbox
+2. 配置
 
     ```shell
-    make menuconfif
+    make menuconfig
     ```
 
     ```text
@@ -73,7 +73,7 @@
     [*] Build static binary (no shared libs)  
     ```
 
-3. 编译toolbox
+3. 编译安装
 
     ```shell
     make -j 8
@@ -128,13 +128,17 @@
     EOF
 
     chmod 755 etc/init.d/rcS
+    ```
 
+5. 生成 rootfs.img
+
+    ```shell
     find . | cpio -o -H newc | gzip > rootfs.img
     ```
 
-## 调试kernel
+## 调试准备
 
-1. qemu 启动 kernel
+1. 启动脚本 start.sh
 
     ```shell
     #!/bin/bash
@@ -158,12 +162,52 @@
     - -S: 表示启动后就挂起，等待 gdb 连接；
     - -nographic: 不启动图形界面，调试信息输出到终端与参数 console=ttyS0 组合使用
 
-2. gdb调试
+2. 准备文件
+
+    ```text
+    /root
+    └── Git.d
+        └── c
+            └── linux
+                ├── Image (arch/arm64/boot/Image)
+                ├── rootfs.img (_install/rootfs.img)
+                ├── start.sh
+                └── .vscode
+                    └── launch.json
+                └── linux
+                    ├── ..
+                    ├── vmlinux
+                    └── ..
+    ```
+
+3. 启动 qemu
 
     ```shell
-    gdb 
-    (gdb) file vmlinux
-    (gdb) target remote :1234
-    (gdb) break start_kernel
-    (gdb) c 
+    ./start.sh
     ```
+
+## gdb调试
+
+gdb 命令行调试
+
+```shell
+gdb
+(gdb) file vmlinux
+(gdb) target remote :1234
+(gdb) break start_kernel
+(gdb) c
+```
+
+## vscode调试
+
+按照 Remote-SSH 插件说明即可。
+
+***注意***
+
+配置 sshd
+
+```shell
+vim /etc/ssh/sshd_config
+
+AllowTcpForwarding yes
+```
