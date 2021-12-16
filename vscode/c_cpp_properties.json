@@ -1,0 +1,31 @@
+{
+    "version": 4,
+    "configurations": [
+        {
+            "name": "Linux",
+            "cStandard": "c11",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "linux-gcc-arm64",
+            "compilerPath": "/usr/bin/gcc",
+            "defines": [
+                "_DEBUG",
+                "UNICODE"
+            ],
+            "includePath": [
+                "/usr/lib/gcc/aarch64-linux-gnu/7.3.0/include",
+                "/usr/local/include",
+                "/usr/include",
+                "${workspaceFolder}/linux/**"
+            ],
+            "browse": {
+                "path": [
+                    "/usr/lib/gcc/aarch64-linux-gnu/7.3.0/include",
+                    "/usr/local/include",
+                    "/usr/include",
+                    "${workspaceFolder}/linux"
+                ],
+                "limitSymbolsToIncludedHeaders": true
+            }
+        }
+    ]
+}

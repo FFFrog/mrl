@@ -173,6 +173,7 @@
                 ├── rootfs.img (_install/rootfs.img)
                 ├── start.sh
                 └── .vscode
+                    ├── c_cpp_properties.json
                     └── launch.json
                 └── linux
                     ├── ..
