@@ -235,14 +235,80 @@ gdb
 
 ## vscode调试
 
-按照 Remote-SSH 插件说明即可。
+1. 安装 VSCode Remote-SSH 插件
 
-***注意***
+   详情参考 VSCode 说明
 
-配置 sshd
+2. 配置 sshd 转发
 
-```shell
-vim /etc/ssh/sshd_config
+    ```shell
+    vim /etc/ssh/sshd_config
 
-AllowTcpForwarding yes
-```
+    AllowTcpForwarding yes
+    ```
+
+3. 配置 VSCode C/C++ 配置文件
+
+    c_cpp_properties.json
+
+    ```text
+    {
+        "version": 4,
+        "configurations": [
+            {
+                "name": "Linux",
+                "cStandard": "c11",
+                "cppStandard": "c++11",
+                "intelliSenseMode": "linux-gcc-arm64",
+                "compilerPath": "/usr/bin/gcc",
+                "defines": [
+                    "_DEBUG",
+                    "UNICODE"
+                ],
+                "includePath": [
+                    "/usr/lib/gcc/aarch64-linux-gnu/7.3.0/include",
+                    "/usr/local/include",
+                    "/usr/include",
+                    "${workspaceFolder}/linux/**"
+                ],
+                "browse": {
+                    "path": [
+                        "/usr/lib/gcc/aarch64-linux-gnu/7.3.0/include",
+                        "/usr/local/include",
+                        "/usr/include",
+                        "${workspaceFolder}/linux"
+                    ],
+                    "limitSymbolsToIncludedHeaders": true
+                }
+            }
+        ]
+    }
+    ```
+
+    launch.json
+
+    ```text
+    {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "C",
+                "type": "cppdbg",
+                "request": "launch",
+                "args": [],
+                "environment": [],
+                "cwd": "${workspaceFolder}",
+                "program": "${workspaceFolder}/linux/vmlinux",
+                "MIMode": "gdb",
+                "miDebuggerServerAddress": "127.0.0.1:1234",
+                "targetArchitecture": "arm64",
+                "stopAtEntry": false,
+                "externalConsole": false,
+                // sourceFileMap 此项请根据具体情况决定是否配置以及具体配置值
+                "sourceFileMap": {
+                    "/root/Git.d/c/linux": "/root/Git.d/c/linux/linux"
+                }
+            }
+        ]
+    }
+    ```
