@@ -152,21 +152,22 @@
     ```shell
     #!/bin/bash
 
-    qemu-kvm -s -S \
+    qemu-kvm -s \
+             -S \
              -smp 2 \
              -cpu cortex-a57 \
-             -m size=1024M \
+             -m size=2048M \
              -nographic \
-             -kernel Image \
-             -initrd rootfs.img \
+             -kernel linux/arch/arm64/boot/Image \
+             -initrd busybox-1.34.0/_install/rootfs.img \
              -machine virt,virtualization=true,gic-version=3 \
-             -net nic -net tap,ifname=tap0,script=no,downscript=no \
+             -netdev tap,id=nd0,ifname=tap0,script=no,downscript=no -device e1000,netdev=nd0 \
              --append "nokaslr console=ttyAMA0 rdinit=/linuxrc"
     ```
 
-    - -kernel Image: 指定启用的内核镜像
-    - -initrd rootfs.img: 指定启动的内存文件系统
-    - -append "nokaslr console=ttyS0": 附加参数，其中 nokaslr 防止内核起始地址随机化导致 gdb 断点不能命中
+    - -kernel: 指定启用的内核镜像
+    - -initrd: 指定启动的内存文件系统
+    - -append: 附加参数，其中 nokaslr 防止内核起始地址随机化导致 gdb 断点不能命中
     - -s: 监听在 gdb 1234 端口
     - -S: 表示启动后就挂起，等待 gdb 连接；
     - -nographic: 不启动图形界面，调试信息输出到终端与参数 console=ttyS0 组合使用
@@ -178,22 +179,46 @@
     └── Git.d
         └── c
             └── linux
-                ├── Image (arch/arm64/boot/Image)
-                ├── rootfs.img (_install/rootfs.img)
                 ├── start.sh
                 └── .vscode
                     ├── c_cpp_properties.json
                     └── launch.json
+                └── .busybox-1.34.0
+                    └── _install
+                        ├── rootfs.img
+                        └── ..
                 └── linux
-                    ├── ..
                     ├── vmlinux
-                    └── ..
+                    └── arch
+                        └── arm64
+                            └── boot
+                                ├── Image
+                                └── ..
     ```
 
 3. 启动 qemu
 
     ```shell
     ./start.sh
+    ```
+
+4. 配置网络
+
+    Host:
+
+    ```shell
+    brctl addbr kernel0
+    ip a add 10.0.0.1/24 dev kernel0
+
+    brctl addif kernel0 tap0
+    ip link set dev tap0 up
+    ```
+
+    Guest:
+
+    ```shell
+    ip a add 10.0.0.2/24 dev eth0
+    ip link set dev eth0 up
     ```
 
 ## gdb调试
