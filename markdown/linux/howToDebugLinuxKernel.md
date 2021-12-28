@@ -9,7 +9,7 @@
     git checkout v5.10
     ```
 
-2. 开启内核参数 `CONFIG_DEBUG_INFO` 和 `CONFIG_GDB_SCRIPTS`。
+2. 开启内核参数
 
     ```shell
     make menuconfig
@@ -17,19 +17,28 @@
 
     ```text
     Kernel hacking  ---> 
-    [*] Kernel debugging
-    Compile-time checks and compiler options  --->
-        [*] Compile the kernel with debug info
-        [*]   Provide GDB scripts for kernel debugging
+        -*- Kernel debugging
+        Compile-time checks and compiler options  --->
+            [*] Compile the kernel with debug info
+            [*] Provide GDB scripts for kernel debugging
+
+    Device Drivers  --->
+        -*- Network device support  --->
+            -*- Ethernet device support  --->
+                [*] Intel devices
+                    [*] Intel(R) PRO/1000 Gigabit Ethernet support
+                    [*] Intel(R) PRO/1000 PCI-Express Gigabit Ethernet support
     ```
 
     配置完成后在当前目录生成 `.config` 文件
 
     ```shell
-    grep -E "CONFIG_DEBUG_INFO|CONFIG_GDB_SCRIPTS" .config
+    grep -Ew "CONFIG_DEBUG_INFO|CONFIG_GDB_SCRIPTS|CONFIG_E1000|CONFIG_E1000E" .config
     ```
 
     ```text
+    CONFIG_E1000=y
+    CONFIG_E1000E=y
     CONFIG_DEBUG_INFO=y
     CONFIG_GDB_SCRIPTS=y
     ```
@@ -43,13 +52,13 @@
 4. 内核镜像
 
     ```text
-    # 未压缩的内核文件，在 gdb 的时候需要加载，用于读取 symbol 符号信息
+    # 未删除符号信息 && 未压缩内核文件（用于 gdb 读取 kernel 符号信息)
     vmlinux
 
-    # 删除 符号以及 debug 信息后的未压缩镜像
+    # 删除符号信息 && 未压缩内核文件
     arch/arm64/boot/Image
 
-    # 删除 符号以及 debug 信息后的压缩镜像
+    # 删除符号信息 && 压缩内核文件
     arch/arm64/boot/Image.gz
     ```
 

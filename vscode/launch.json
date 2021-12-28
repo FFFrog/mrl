@@ -14,6 +14,7 @@
             "targetArchitecture": "arm64",
             "stopAtEntry": false,
             "externalConsole": false,
+            // sourceFileMap 此项请根据具体情况决定是否配置以及具体配置值
             "sourceFileMap":{
                 "/root/Git.d/c/linux": "/root/Git.d/c/linux/linux"
             }
