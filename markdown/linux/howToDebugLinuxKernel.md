@@ -28,15 +28,20 @@
                 [*] Intel devices
                     [*] Intel(R) PRO/1000 Gigabit Ethernet support
                     [*] Intel(R) PRO/1000 PCI-Express Gigabit Ethernet support
+
+    [*] Networking support  --->
+        Networking options  --->
+            <*> 802.1d Ethernet Bridging
     ```
 
     配置完成后在当前目录生成 `.config` 文件
 
     ```shell
-    grep -Ew "CONFIG_DEBUG_INFO|CONFIG_GDB_SCRIPTS|CONFIG_E1000|CONFIG_E1000E" .config
+    grep -Ew "CONFIG_DEBUG_INFO|CONFIG_GDB_SCRIPTS|CONFIG_E1000|CONFIG_E1000E|CONFIG_BRIDGE" .config
     ```
 
     ```text
+    CONFIG_BRIDGE=y
     CONFIG_E1000=y
     CONFIG_E1000E=y
     CONFIG_DEBUG_INFO=y
