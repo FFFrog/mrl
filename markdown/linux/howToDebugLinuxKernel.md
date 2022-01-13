@@ -23,32 +23,73 @@
             [*] Provide GDB scripts for kernel debugging
 
     Device Drivers  --->
-        -*- Network device support  --->
-            -*- Ethernet device support  --->
-                [*] Intel devices
-                    [*] Intel(R) PRO/1000 Gigabit Ethernet support
-                    [*] Intel(R) PRO/1000 PCI-Express Gigabit Ethernet support
+        Generic Driver Options  --->
+            [*] Support for uevent helper
+
+    Device Drivers  --->
+        Generic Driver Options  --->
+            (/sbin/hotplug) path to uevent helper
+
+    Device Drivers  --->
+        Character devices  --->
+            <*> Virtio console
+
+    Device Drivers  --->
+        [*] Virtio drivers  --->
+            <*>   Platform bus driver for memory mapped virtio devices
+
+    Device Drivers  --->
+        [*] Virtio drivers  --->
+            <*>   PCI driver for virtio devices
+
+    Device Drivers  --->
+        [*] Block devices  --->
+            <*>   Virtio block driver
 
     [*] Networking support  --->
-        Networking options  --->
-            <*> 802.1d Ethernet Bridging
+        <*>   Plan 9 Resource Sharing Support (9P2000)  --->
+
+    [*] Networking support  --->
+        <*>   Plan 9 Resource Sharing Support (9P2000)  --->
+            <*>   9P Virtio Transport
+
+    File systems  --->
+        [*] Network File Systems  --->
+            <*>   Plan 9 Resource Sharing Support (9P2000)
+
+    File systems  --->
+        [*] Network File Systems  --->
+            <*>   Plan 9 Resource Sharing Support (9P2000)
+                [*]     9P POSIX Access Control Lists
+
+    File systems  --->
+        <*> The Extended 4 (ext4) filesystem
     ```
 
     配置完成后在当前目录生成 `.config` 文件
 
     ```shell
-    grep -Ew "CONFIG_DEBUG_INFO|CONFIG_GDB_SCRIPTS|CONFIG_E1000|CONFIG_E1000E|CONFIG_BRIDGE" .config
+    grep -Ew "CONFIG_DEBUG_INFO|CONFIG_GDB_SCRIPTS|CONFIG_UEVENT_HELPER|CONFIG_UEVENT_HELPER_PATH|CONFIG_VIRTIO_CONSOLE|CONFIG_VIRTIO_MMIO|CONFIG_VIRTIO_PCI|CONFIG_VIRTIO|CONFIG_VIRTIO_BLK|CONFIG_NET_9P|CONFIG_NET_9P_VIRTIO|CONFIG_9P_FS|CONFIG_9P_FS_POSIX_ACL|CONFIG_EXT4_FS" .config
     ```
 
     ```text
-    CONFIG_BRIDGE=y
-    CONFIG_E1000=y
-    CONFIG_E1000E=y
+    CONFIG_NET_9P=y
+    CONFIG_NET_9P_VIRTIO=y
+    CONFIG_UEVENT_HELPER=y
+    CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+    CONFIG_VIRTIO_BLK=y
+    CONFIG_VIRTIO_CONSOLE=y
+    CONFIG_VIRTIO=y
+    CONFIG_VIRTIO_PCI=y
+    CONFIG_VIRTIO_MMIO=y
+    CONFIG_EXT4_FS=y
+    CONFIG_9P_FS=y
+    CONFIG_9P_FS_POSIX_ACL=y
     CONFIG_DEBUG_INFO=y
     CONFIG_GDB_SCRIPTS=y
     ```
 
-3. 编译内核
+3. 编译安装
 
     ```shell
     make -j 8
@@ -99,7 +140,9 @@
     ```shell
     cd _install
 
-    mkdir -p proc sys dev tmp root etc/init.d
+    mkdir -p lib lib64 home mnt
+    mkdir -p proc var sys tmp run srv
+    mkdir -p dev root etc/init.d
 
     mknod dev/console c 5 1
     mknod dev/null c 1 3
@@ -115,7 +158,7 @@
     export HOME=/root
     export PS1="[$USER@$HOSTNAME \W]\# "
     PATH=/bin:/sbin:/usr/bin:/usr/sbin
-    LD_LIBRARY_PATH=/lib:/usr/lib:$LD_LIBRARY_PATH
+    LD_LIBRARY_PATH=/lib:/usr/lib:/lib64:/usr/lib64:$LD_LIBRARY_PATH
     export PATH LD_LIBRARY_PATH
     EOF
 
@@ -126,6 +169,7 @@
     sysfs /sys sysfs defaults 0 0
     tmpfs /dev tmpfs defaults 0 0
     debugfs /sys/kernel/debug debugfs defaults 0 0
+    shared /mnt 9p trans=virtio 0 0
     EOF
 
     cat << EOF > etc/inittab
@@ -139,16 +183,31 @@
     /bin/mount -a
     mkdir -p /dev/pts
     mount -t devpts devpts /dev/pts
+    echo /sbin/mdev > /proc/sys/kernel/hotplug
+    mdev -s
     EOF
 
     chmod 755 etc/init.d/rcS
     ```
 
-5. 生成 rootfs.img
+5. 制作虚拟磁盘文件
 
     ```shell
-    find . | cpio -o -H newc | gzip > rootfs.img
+    mkdir loop
+
+    dd if=/dev/zero of=rootfs.ext4.img bs=1M count=10240
+
+    mkfs.ext4 rootfs.ext4
+    mount -t ext4 -o loop rootfs.ext4 loop
+
+    cp -af _install/* loop
+    make modules_install INSTALL_MOD_PATH=/root/Git.d/c/linux/rootfs.ext4/
+
+    umount loop
+
+    rmdir loop
     ```
+
 
 ## 调试准备
 
@@ -161,21 +220,23 @@
              -S \
              -smp 2 \
              -cpu cortex-a57 \
-             -m size=2048M \
+             -m size=1024M \
              -nographic \
              -kernel linux/arch/arm64/boot/Image \
-             -initrd busybox-1.34.0/_install/rootfs.img \
              -machine virt,virtualization=true,gic-version=3 \
+             --fsdev local,id=shared,path=shared,security_model=none \
+             -device virtio-9p-device,fsdev=shared,mount_tag=shared \
+             -drive if=none,format=raw,file=rootfs.ext4,id=hd0 \
+             -device virtio-blk-device,drive=hd0 \
              -netdev tap,id=nd0,ifname=tap0,script=no,downscript=no -device e1000,netdev=nd0 \
-             --append "nokaslr console=ttyAMA0 rdinit=/linuxrc"
+             --append "noinitrd root=/dev/vda rw nokaslr console=ttyAMA0 loglevel=8 rdinit=/linuxrc"
     ```
 
-    - -kernel: 指定启用的内核镜像
-    - -initrd: 指定启动的内存文件系统
-    - -append: 附加参数，其中 nokaslr 防止内核起始地址随机化导致 gdb 断点不能命中
     - -s: 监听在 gdb 1234 端口
     - -S: 表示启动后就挂起，等待 gdb 连接；
     - -nographic: 不启动图形界面，调试信息输出到终端与参数 console=ttyS0 组合使用
+    - -kernel: 指定启用的内核镜像
+    - -append: 附加参数，其中 nokaslr 防止内核起始地址随机化导致 gdb 断点不能命中
 
 2. 准备文件
 
@@ -185,13 +246,12 @@
         └── c
             └── linux
                 ├── start.sh
+                ├── shared
+                ├── rootfs.ext4
+                ├── busybox-1.34.0
                 └── .vscode
                     ├── c_cpp_properties.json
                     └── launch.json
-                └── .busybox-1.34.0
-                    └── _install
-                        ├── rootfs.img
-                        └── ..
                 └── linux
                     ├── vmlinux
                     └── arch
@@ -222,6 +282,8 @@
     Guest:
 
     ```shell
+    modprobe e1000
+    modprobe bridge
     ip a add 10.0.0.2/24 dev eth0
     ip link set dev eth0 up
     ```
