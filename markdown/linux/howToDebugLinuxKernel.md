@@ -208,7 +208,6 @@
     rmdir loop
     ```
 
-
 ## 调试准备
 
 1. 启动脚本 start.sh
@@ -273,10 +272,13 @@
 
     ```shell
     brctl addbr kernel0
-    ip a add 10.0.0.1/24 dev kernel0
-
     brctl addif kernel0 tap0
+
+    ip a add 10.0.0.1/24 dev kernel0
     ip link set dev tap0 up
+    ip link set dev kernel0 up
+
+    iptables -t nat -A POSTROUTING -s 10.0.0.0/24 ! -o kernel0 -j MASQUERADE
     ```
 
     Guest:
@@ -284,8 +286,11 @@
     ```shell
     modprobe e1000
     modprobe bridge
+
     ip a add 10.0.0.2/24 dev eth0
     ip link set dev eth0 up
+    ip link set dev lo up
+    ip route add default via 10.0.0.1 dev eth0
     ```
 
 ## gdb调试
