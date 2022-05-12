@@ -16,7 +16,6 @@
 ## Kernel Implementation
 
 ```c++
-//onnxruntime/onnxruntime/core/providers/cpu/math/element_wise_ops.h
 template <typename T>
 class Add final : public OpKernel {
  public:
@@ -26,7 +25,6 @@ class Add final : public OpKernel {
   Status Compute(OpKernelContext* context) const override;
 };
 
-//onnxruntime/onnxruntime/core/providers/cpu/math/element_wise_ops.cc
 template <typename T>
 Status Add<T>::Compute(OpKernelContext* context) const {
   // BroadcastHelper received as argument may differ from 'helper' when parallelizing within a span
@@ -49,7 +47,6 @@ Status Add<T>::Compute(OpKernelContext* context) const {
 ## Kernel Registry
 
 ```c++
-//onnxruntime/onnxruntime/core/providers/cpu/math/element_wise_ops.cc
 REG_ELEMENTWISE_VERSIONED_TYPED_KERNEL(Add, 7, 12, float, Add);
 
 #define REG_ELEMENTWISE_VERSIONED_TYPED_KERNEL(OP_TYPE, VERSION_FROM, VERSION_TO, TYPE, KERNEL_CLASS) \
@@ -63,6 +60,9 @@ REG_ELEMENTWISE_VERSIONED_TYPED_KERNEL(Add, 7, 12, float, Add);
 #define ONNX_CPU_OPERATOR_VERSIONED_TYPED_KERNEL(name, startver, endver, type, builder, ...)                         \
   ONNX_OPERATOR_VERSIONED_TYPED_KERNEL_EX(name, kOnnxDomain, startver, endver, type, kCpuExecutionProvider, builder, \
                                           __VA_ARGS__)
+
+#define ONNX_OPERATOR_VERSIONED_TYPED_KERNEL_CLASS_NAME(provider, domain, startver, endver, type, name) \
+  provider##_##name##_##domain##_ver##startver##_##endver##_##type
 
 #define ONNX_OPERATOR_VERSIONED_TYPED_KERNEL_EX(name, domain, startver, endver, type, provider, builder, ...)         \
   class ONNX_OPERATOR_VERSIONED_TYPED_KERNEL_CLASS_NAME(provider, domain, startver, endver, type, name);              \
@@ -138,6 +138,21 @@ class KernelDefBuilder {
   // we own the KernelDef until Build() is called.
   std::unique_ptr<KernelDef> kernel_def_;
 };
+```
+
+```c++
+class kCpuExecutionProvider_Add_kOnnxDomain_7_12_float;
+template <>
+kernelCreateInfo
+BuildKernelCreateInfo<kCpuExecutionProvider_Add_kOnnxDomain_7_12_float>() {
+  return KernelCreateInfo(                                                                                          \
+      KernelDefBuilder().TypeConstraint("T", DataTypeImpl::GetTensorType<TYPE>()).SetName("Add")                    \
+          .SetDomain(kOnnxDomain)                                                                                   \
+          .SinceVersion(7, 12)                                                                                      \
+          .Provider(kCpuExecutionProvider)                                                                          \
+          .Build(),                                                                                                 \
+      static_cast<KernelCreatePtrFn>([](FuncManager&, const OpKernelInfo& info, std::unique_ptr<OpKernel>& out) -> Status { out = std::make_unique<Add<float>>(info); return Status::OK(); })); \
+}
 ```
 
 ## Kernel Management
@@ -239,14 +254,10 @@ class KernelRegistry {
                           ": Conflicting with a registered kernel with op versions.");
       }
     }
-
     ...
-
     // Register the kernel.
     auto it = kernel_creator_fn_map_.emplace(key, std::move(create_info));
-
     ...
-
     return Status::OK();
   }
 
@@ -507,5 +518,9 @@ Status SequentialExecutor::Execute(const SessionState& session_state, const std:
     ...
     compute_status = p_op_kernel->Compute(&op_kernel_context);
   }
+}
+
+const OpKernel* GetKernel(size_t node_id) const {
+  return (node_id < session_kernels_.size()) ? session_kernels_[node_id].get() : nullptr;
 }
 ```
