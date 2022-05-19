@@ -5,6 +5,8 @@
 <!-- code_chunk_output -->
 
 - [ONNX Runtime](#onnx-runtime)
+  - [OpSchema Registry](#opschema-registry)
+  - [OpSchema Management](#opschema-management)
   - [Kernel Implementation](#kernel-implementation)
   - [Kernel Registry](#kernel-registry)
   - [Kernel Management](#kernel-management)
@@ -12,6 +14,196 @@
   - [Kernel Run](#kernel-run)
 
 <!-- /code_chunk_output -->
+
+## OpSchema Registry
+
+```c++
+ONNX_OPERATOR_SET_SCHEMA(
+    Add,
+    1,
+    OpSchema().FillUsing(MathDocGenerator_old("addition")));
+
+OpSchema() : OpSchema("unknown", "unknown", 0) {}
+
+OpSchema& OpSchema::FillUsing(const std::function<void(OpSchema&)>& populator) {
+  if (populator) {
+    populator(*this);
+  }
+  return *this;
+}
+
+std::function<void(OpSchema&)> MathDocGenerator_old(const char* name) {
+  return [=](OpSchema& schema) {
+    std::string doc;
+    POPULATE_OP_DOC_STR(doc = R"DOC(
+Performs element-wise binary {name} (with limited broadcast support).
+{broadcast_doc})DOC";
+                        ReplaceAll(doc, "{name}", name);
+                        ReplaceAll(doc, "{broadcast_doc}", kBroadcastDoc_old););
+    schema.SetDoc(doc);
+    schema.Attr(
+        "broadcast",
+        "Pass 1 to enable broadcasting",
+        AttributeProto::INT,
+        static_cast<int64_t>(0));
+
+    // This attribute was added via AllowConsumed API in OpSchema.
+    // After removing the API, we're now using the Attr API to simulate the old
+    // definition.
+    schema.Attr(
+        "consumed_inputs",
+        "legacy optimization attribute.",
+        AttributeProto::INTS,
+        OPTIONAL_VALUE);
+    schema.Attr(
+        "axis",
+        "If set, defines the broadcast dimensions. See doc for details.",
+        AttributeProto::INT,
+        OPTIONAL_VALUE);
+    schema.Input(
+        0,
+        "A",
+        "First operand, should share the type with the second operand.",
+        "T");
+    schema.Input(
+        1,
+        "B",
+        "Second operand. With broadcasting can be of smaller size than A. "
+        "If broadcasting is disabled it should be of the same size.",
+        "T");
+    schema.Output(0, "C", "Result, has same dimensions and type as A", "T");
+    schema.TypeConstraint(
+        "T",
+        {"tensor(float16)", "tensor(float)", "tensor(double)"},
+        "Constrain input and output types to float tensors.");
+  };
+}
+
+#define ONNX_OPERATOR_SET_SCHEMA(name, ver, impl) \
+  ONNX_OPERATOR_SET_SCHEMA_EX(name, Onnx, ONNX_DOMAIN, ver, true, impl)
+
+#define ONNX_OPERATOR_SET_SCHEMA_EX(                                        \
+    name, domain, domain_str, ver, dbg_included_in_static_opset, impl)      \
+  class ONNX_OPERATOR_SET_SCHEMA_CLASS_NAME(domain, ver, name);             \
+  template <>                                                               \
+  OpSchema                                                                  \
+  GetOpSchema<ONNX_OPERATOR_SET_SCHEMA_CLASS_NAME(domain, ver, name)>() {   \
+    return impl.SetName(#name)                                              \
+        .SetDomain(domain_str)                                              \
+        .SinceVersion(ver)                                                  \
+        .SetLocation(__FILE__, __LINE__);                                   \
+  }                                                                         \
+  size_t dbg_count_check_##name##_##domain##_ver##ver =                     \
+      (dbg_included_in_static_opset) ? ONNX_DBG_INCREMENT_COUNT_IN_OPSETS() \
+                                     : 0;
+```
+
+## OpSchema Management
+
+```c++
+inline void RegisterOnnxOperatorSetSchema() {
+  RegisterOpSetSchema<OpSet_Onnx_ver1>();
+  RegisterOpSetSchema<OpSet_Onnx_ver2>();
+  RegisterOpSetSchema<OpSet_Onnx_ver3>();
+  RegisterOpSetSchema<OpSet_Onnx_ver4>();
+  RegisterOpSetSchema<OpSet_Onnx_ver5>();
+  RegisterOpSetSchema<OpSet_Onnx_ver6>();
+  RegisterOpSetSchema<OpSet_Onnx_ver7>();
+  RegisterOpSetSchema<OpSet_Onnx_ver8>();
+  RegisterOpSetSchema<OpSet_Onnx_ver9>();
+  RegisterOpSetSchema<OpSet_Onnx_ver10>();
+  RegisterOpSetSchema<OpSet_Onnx_ver11>();
+  RegisterOpSetSchema<OpSet_Onnx_ver12>();
+  RegisterOpSetSchema<OpSet_Onnx_ver13>();
+  RegisterOpSetSchema<OpSet_Onnx_ver14>();
+  RegisterOpSetSchema<OpSet_Onnx_ver15>();
+  RegisterOpSetSchema<OpSet_Onnx_ver16>();
+  // 0 means all versions of ONNX schema have been loaded
+  OpSchemaRegistry::Instance()->SetLoadedSchemaVersion(0);
+}
+
+class OpSet_Onnx_ver1 {
+ public:
+  static void ForEachSchema(std::function<void(OpSchema&&)> fn) {
+    fn(GetOpSchema<ONNX_OPERATOR_SET_SCHEMA_CLASS_NAME(Onnx, 1, Abs)>());
+    fn(GetOpSchema<ONNX_OPERATOR_SET_SCHEMA_CLASS_NAME(Onnx, 1, Add)>());
+    fn(GetOpSchema<ONNX_OPERATOR_SET_SCHEMA_CLASS_NAME(Onnx, 1, And)>());
+    fn(GetOpSchema<ONNX_OPERATOR_SET_SCHEMA_CLASS_NAME(Onnx, 1, ArgMax)>());
+    ...
+  }
+};
+
+template <class T>
+void RegisterOpSetSchema(int opset_version_to_load=0) {
+  T::ForEachSchema([opset_version_to_load](OpSchema&& schema) {
+    RegisterSchema(schema, opset_version_to_load);
+  });
+};
+
+void RegisterSchema(OpSchema schema, int opset_version_to_load) {
+  OpSchemaRegistry::OpSchemaRegisterOnce ONNX_UNUSED registration(schema, opset_version_to_load);
+}
+
+class OpSchemaRegisterOnce final {
+  public:
+  OpSchemaRegisterOnce(OpSchema& op_schema) {
+    try {
+      op_schema.Finalize();
+
+      auto& m = GetMapWithoutEnsuringRegistration();
+
+      auto& op_name = op_schema.Name();
+      auto& op_domain = op_schema.domain();
+      auto ver = op_schema.SinceVersion();
+
+      if (m[op_name][op_domain].count(ver)) {
+        const auto& schema = m[op_name][op_domain][ver];
+        std::stringstream err;
+        err << "Trying to register schema with name " << op_name
+            << " (domain: " << op_domain << " version: " << ver
+            << ") from file " << op_schema.file() << " line "
+            << op_schema.line() << ", but it is already registered from file "
+            << schema.file() << " line " << schema.line() << std::endl;
+        fail_schema(err.str());
+      }
+
+      auto ver_range_map = DomainToVersionRange::Instance().Map();
+      auto ver_range_it = ver_range_map.find(op_domain);
+      if (ver_range_it == ver_range_map.end()) {
+        std::stringstream err;
+        err << "Trying to register schema with name " << op_name
+            << " (domain: " << op_domain << " version: " << ver
+            << ") from file " << op_schema.file() << " line "
+            << op_schema.line() << ", but it its domain is not"
+            << " known by the checker." << std::endl;
+
+        fail_schema(err.str());
+      }
+      auto lower_bound_incl = ver_range_it->second.first;
+      auto upper_bound_incl = ver_range_it->second.second;
+      if (!(lower_bound_incl <= ver && upper_bound_incl >= ver)) {
+        std::stringstream err;
+        err << "Trying to register schema with name " << op_name
+            << " (domain: " << op_domain << " version: " << ver
+            << ") from file " << op_schema.file() << " line "
+            << op_schema.line() << ", but it its version is not "
+            << "in the inclusive range [" << lower_bound_incl << ", "
+            << upper_bound_incl << "] (usually, this means you "
+            << "bumped the operator version but "
+            << "forgot to update the version range in DomainToVersionRange "
+            << "in onnx/defs/schema.h)." << std::endl;
+        fail_schema(err.str());
+      }
+
+      m[op_name][op_domain].insert(
+          std::pair<int, OpSchema&&>(ver, std::move(op_schema)));
+
+    } catch (const std::exception& e) {
+      std::cerr << "Schema error: " << e.what() << std::endl;
+    }
+  }
+};
+```
 
 ## Kernel Implementation
 
