@@ -505,13 +505,17 @@
 
     //system settings
     {
-        "key": "shift+cmd+r",
-        "command": "-rerunSearchEditorSearch",
-        "when": "inSearchEditor"
+        "key": "shift+cmd+o",
+        "command": "outline.focus"
     },
     {
         "key": "shift+cmd+r",
         "command": "workbench.action.openRecent"
+    },
+    {
+        "key": "shift+cmd+r",
+        "command": "-rerunSearchEditorSearch",
+        "when": "inSearchEditor"
     },
     {
         "key": "cmd+w",
