@@ -25,7 +25,11 @@
     "editor.hideCursorInOverviewRuler": true,
     "editor.overviewRulerBorder": false,
     "editor.formatOnSave": false,
-    "editor.quickSuggestions": true,
+    "editor.quickSuggestions": {
+        "comments": "on",
+        "strings": "on",
+        "other": "on"
+    },
     "editor.snippetSuggestions": "inline",
     "editor.bracketPairColorization.enabled": true,
     "editor.suggest.preview": true,
