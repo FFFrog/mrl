@@ -505,17 +505,29 @@
 
     //system settings
     {
-        "key": "shift+cmd+o",
-        "command": "outline.focus"
+        "key": "alt+cmd+s",
+        "command": "-saveAll"
+    },
+    {
+        "key": "cmd+k s",
+        "command": "saveAll"
+    },
+    {
+        "key": "cmd+k s",
+        "command": "-workbench.action.files.saveWithoutFormatting"
+    },
+    {
+        "key": "shift+cmd+r",
+        "command": "-rerunSearchEditorSearch",
+        "when": "inSearchEditor"
     },
     {
         "key": "shift+cmd+r",
         "command": "workbench.action.openRecent"
     },
     {
-        "key": "shift+cmd+r",
-        "command": "-rerunSearchEditorSearch",
-        "when": "inSearchEditor"
+        "key": "shift+cmd+o",
+        "command": "outline.focus"
     },
     {
         "key": "cmd+w",
