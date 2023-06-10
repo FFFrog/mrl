@@ -466,6 +466,14 @@
         "command": "-workbench.action.debug.run",
         "when": "debuggersAvailable && debugState != 'initializing'"
     },
+    {
+        "key": "cmd+k v",
+        "command": "workbench.debug.action.focusVariablesView"
+    },
+    {
+        "key": "cmd+k b",
+        "command": "workbench.debug.action.focusCallStackView"
+    },
 
     //search settings
     {
@@ -526,7 +534,7 @@
         "command": "workbench.action.openRecent"
     },
     {
-        "key": "shift+cmd+o",
+        "key": "cmd+k o",
         "command": "outline.focus"
     },
     {
