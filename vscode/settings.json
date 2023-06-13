@@ -40,6 +40,9 @@
     "diffEditor.renderSideBySide": true,
     "diffEditor.ignoreTrimWhitespace": false,
 
+    //search settings
+    "search.useIgnoreFiles": false,
+
     //file settings
     "files.eol": "\n",
     "files.insertFinalNewline": true,
@@ -116,10 +119,10 @@
     "C_Cpp.default.cppStandard": "c++11",
     "C_Cpp.default.intelliSenseMode": "macos-clang-arm64",
     "C_Cpp.default.browse.limitSymbolsToIncludedHeaders": true,
-    "C_Cpp.intelliSenseEngine": "Default",
-    "C_Cpp.intelliSenseEngineFallback": "Disabled",
+    "C_Cpp.intelliSenseEngine": "default",
+    "C_Cpp.intelliSenseEngineFallback": "disabled",
     "C_Cpp.intelliSenseCacheSize": 0,
-    "C_Cpp.errorSquiggles": "EnabledIfIncludesResolve",
+    "C_Cpp.errorSquiggles": "enabledIfIncludesResolve",
     "C_Cpp.autoAddFileAssociations": false,
     "C_Cpp.default.includePath": [
         "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1",
