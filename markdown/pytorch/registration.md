@@ -1,17 +1,164 @@
 # The Implementation of Registration&&Call of Operators
 
 ```c++
+class TorchLibraryInit final {
+private:
+  using InitFn = void(Library&);
+  Library lib_;
+
+public:
+  TorchLibraryInit(
+      Library::Kind kind,
+      InitFn* fn,
+      const char* ns,
+      c10::optional<c10::DispatchKey> k,
+      const char* file,
+      uint32_t line)
+      : lib_(kind, ns, k, file, line) {
+    fn(lib_);
+  }
+};
+
+Library::Library(Kind kind, std::string ns, c10::optional<c10::DispatchKey> k, const char* file, uint32_t line)
+  : kind_(kind)
+  , ns_(ns == "_" ? c10::nullopt : c10::make_optional(std::move(ns)))
+  , dispatch_key_(k.value_or(CatchAll) == CatchAll ? c10::nullopt : k)
+  , file_(file)
+  , line_(line)
+{
+  switch (kind_) {
+    case DEF:
+      // Only DEFs require library uniqueness; fragments
+      // don't register a library
+      registrars_.emplace_back(
+        c10::Dispatcher::singleton().registerLibrary(
+          *ns_, debugString(file_, line_)
+        )
+      );
+      [[fallthrough]];
+    case FRAGMENT:
+      TORCH_CHECK(
+        ns_.has_value(),
+        toString(kind_), ": cannot define ", toString(kind_), " with the wildcard namespace _ "
+        "(every ", toString(kind_), " defines operators for a distinct namespace!) "
+        "Did you mean to use TORCH_LIBRARY_IMPL instead?  "
+        ERROR_CONTEXT
+      );
+      TORCH_INTERNAL_ASSERT(!dispatch_key_.has_value(), ERROR_CONTEXT);
+      break;
+    case IMPL:
+      // Nothing to do, everything is OK
+      break;
+  }
+}
+
+#define TORCH_LIBRARY(ns, m)                                                   \
+  static void TORCH_LIBRARY_init_##ns(torch::Library&);                        \
+  static const torch::detail::TorchLibraryInit TORCH_LIBRARY_static_init_##ns( \
+      torch::Library::DEF,                                                     \
+      &TORCH_LIBRARY_init_##ns,                                                \
+      #ns,                                                                     \
+      c10::nullopt,                                                            \
+      __FILE__,                                                                \
+      __LINE__);                                                               \
+  void TORCH_LIBRARY_init_##ns(torch::Library& m)
+
+// static void TORCH_LIBRARY_init_aten(torch::Library&);
+// static const torch::detail::TorchLibraryInit TORCH_LIBRARY_static_init_aten( torch::Library::DEF, &TORCH_LIBRARY_init_aten, "aten", c10::nullopt, "/home/mrl/Git.d/pytorch/pytorch/build/aten/src/ATen/RegisterSchema.cpp", 6);
+// void TORCH_LIBRARY_init_aten(torch::Library& m)
+TORCH_LIBRARY(aten, m) {
+  m.def("_cast_Byte(Tensor self, bool non_blocking=False) -> Tensor", {});
+  ...
+}
+
+Library& Library::_def(c10::FunctionSchema&& schema, c10::OperatorName* out_name, const std::vector<at::Tag>& tags, _RegisterOrVerify rv) & {
+  auto ns_opt = schema.getNamespace();
+  if (ns_opt.has_value()) {
+    TORCH_CHECK(*ns_opt == *ns_,
+      "Explicitly provided namespace (", *ns_opt, ") in schema string "
+      "does not match namespace of enclosing ", toString(kind_), " block (", *ns_, ").  "
+      "Move this definition to the (unique) TORCH_LIBRARY block corresponding to this namespace "
+      "(and consider deleting the namespace from your schema string.)  ",
+      ERROR_CONTEXT
+    );
+  } else {
+    bool b = schema.setNamespaceIfNotSet(ns_->c_str());
+    TORCH_INTERNAL_ASSERT(b, ERROR_CONTEXT);
+  }
+  if (out_name) {
+    *out_name = schema.operator_name(); // copy!
+  }
+  switch (rv) {
+    case _RegisterOrVerify::REGISTER:
+      registrars_.emplace_back(
+        c10::Dispatcher::singleton().registerDef(
+          std::move(schema),
+          debugString(file_, line_),
+          tags
+        )
+      );
+      break;
+    case _RegisterOrVerify::VERIFY:
+      c10::Dispatcher::singleton().waitForDef(schema);
+      break;
+  }
+  return *this;
+}
+
+RegistrationHandleRAII Dispatcher::registerDef(FunctionSchema schema, std::string debug, std::vector<at::Tag> tags) {
+  // we need a lock to avoid concurrent writes
+  std::lock_guard<std::mutex> lock(mutex_);
+
+  OperatorName op_name = schema.operator_name();
+  auto op = findOrRegisterName_(op_name);
+
+  op.operatorDef_->op.registerSchema(std::move(schema), std::move(debug), std::move(tags));
+  listeners_->callOnOperatorRegistered(op);
+
+  // NB: do not increment the counts until AFTER error checking
+  ++op.operatorDef_->def_count;
+  ++op.operatorDef_->def_and_impl_count;
+
+  cond_var_.notify_all();
+
+  return RegistrationHandleRAII([this, op, op_name] {
+    deregisterDef_(op, op_name);
+  });
+}
+```
+
+```c++
 void wrapper_CPU___assert_async(const at::Tensor & self) {
   return at::native::_assert_async_cpu(self);
 }
 
-TORCH_LIBRARY_IMPL(aten, CPU, m) {
-m.impl("_assert_async",
-TORCH_FN(wrapper_CPU___assert_async));
-...
-```
+#define TORCH_LIBRARY_IMPL(ns, k, m) _TORCH_LIBRARY_IMPL(ns, k, m, C10_UID)
 
-```c++
+#define _TORCH_LIBRARY_IMPL(ns, k, m, uid)                                \
+  static void C10_CONCATENATE(                                            \
+      TORCH_LIBRARY_IMPL_init_##ns##_##k##_, uid)(torch::Library&);       \
+  static const torch::detail::TorchLibraryInit C10_CONCATENATE(           \
+      TORCH_LIBRARY_IMPL_static_init_##ns##_##k##_, uid)(                 \
+      torch::Library::IMPL,                                               \
+      (c10::impl::dispatch_key_allowlist_check(c10::DispatchKey::k)       \
+           ? &C10_CONCATENATE(TORCH_LIBRARY_IMPL_init_##ns##_##k##_, uid) \
+           : [](torch::Library&) -> void {}),                             \
+      #ns,                                                                \
+      c10::make_optional(c10::DispatchKey::k),                            \
+      __FILE__,                                                           \
+      __LINE__);                                                          \
+  void C10_CONCATENATE(                                                   \
+      TORCH_LIBRARY_IMPL_init_##ns##_##k##_, uid)(torch::Library & m)
+
+// static void TORCH_LIBRARY_IMPL_init_aten_CPU_3(torch::Library&);
+// static const torch::detail::TorchLibraryInit TORCH_LIBRARY_IMPL_static_init_aten_CPU_3( torch::Library::IMPL, (c10::impl::dispatch_key_allowlist_check(c10::DispatchKey::CPU) ? &TORCH_LIBRARY_IMPL_init_aten_CPU_3 : [](torch::Library&) -> void {}), "aten", c10::make_optional(c10::DispatchKey::CPU), "/home/mrl/Git.d/pytorch/pytorch/build/aten/src/ATen/RegisterCPU.cpp", 31151);
+// void TORCH_LIBRARY_IMPL_init_aten_CPU_3(torch::Library & m)
+TORCH_LIBRARY_IMPL(aten, CPU, m) {
+  m.impl("_assert_async",
+  TORCH_FN(wrapper_CPU___assert_async));
+  ...
+}
+
 #define TORCH_FN(func) TORCH_FN_TYPE(func)()
 
 #define TORCH_FN_TYPE(func)                                           \
@@ -43,8 +190,8 @@ Library& impl(
     Name name,
     Func&& raw_f,
     _RegisterOrVerify rv = _RegisterOrVerify::REGISTER) & {
-CppFunction f(std::forward<Func>(raw_f));
-return _impl(name, std::move(f), rv);
+    CppFunction f(std::forward<Func>(raw_f));
+    return _impl(name, std::move(f), rv);
 }
 
 
@@ -68,8 +215,6 @@ explicit CppFunction(
             typename FuncPtr::FuncType>()),
     debug_() {}
 
-}
-
 // FuncPtr = CompileTimeFunctionPointer<void(const at::Tensor &), wrapper_CPU___assert_async>
 template<class FuncPtr, bool AllowLegacyTypes = false>
 inline KernelFunction KernelFunction::makeFromUnboxedFunction(FuncPtr func_ptr) {
@@ -82,11 +227,11 @@ inline KernelFunction KernelFunction::makeFromUnboxedFunction(FuncPtr func_ptr) 
 // FuncPtr = CompileTimeFunctionPointer<void(const at::Tensor &), wrapper_CPU___assert_async>
 template<class FuncPtr>
 struct WrapFunctionIntoFunctor final {
-using type = detail::WrapFunctionIntoFunctor_<
-    FuncPtr,
-    typename guts::function_traits<typename FuncPtr::FuncType>::return_type,
-    typename guts::function_traits<typename FuncPtr::FuncType>::parameter_types
->;
+  using type = detail::WrapFunctionIntoFunctor_<
+      FuncPtr,
+      typename guts::function_traits<typename FuncPtr::FuncType>::return_type,
+      typename guts::function_traits<typename FuncPtr::FuncType>::parameter_types
+  >;
 };
 
 template <class Func>
@@ -283,15 +428,6 @@ Library& Library::_fallback(CppFunction&& f) & {
   return *this;
 }
 
-template <typename Name, typename Func>
-Library& impl(
-    Name name,
-    Func&& raw_f,
-    _RegisterOrVerify rv = _RegisterOrVerify::REGISTER) & {
-    CppFunction f(std::forward<Func>(raw_f));
-    return _impl(name, std::move(f), rv);
-}
-
 Library& Library::_impl(const char* name_str, CppFunction&& f, _RegisterOrVerify rv) & {
   at::OperatorName name = _parseNameForLib(name_str);
   auto dispatch_key = f.dispatch_key_.has_value() ? f.dispatch_key_ : dispatch_key_;
@@ -313,6 +449,36 @@ Library& Library::_impl(const char* name_str, CppFunction&& f, _RegisterOrVerify
       break;
   }
   return *this;
+
+RegistrationHandleRAII Dispatcher::registerImpl(
+  OperatorName op_name,
+  c10::optional<DispatchKey> dispatch_key,
+  KernelFunction kernel,
+  c10::optional<impl::CppSignature> cpp_signature,
+  std::unique_ptr<FunctionSchema> inferred_function_schema,
+  std::string debug
+) {
+  std::lock_guard<std::mutex> lock(mutex_);
+
+  auto op = findOrRegisterName_(op_name);
+
+  auto handle = op.operatorDef_->op.registerKernel(
+    *this,
+    dispatch_key,
+    std::move(kernel),
+    std::move(cpp_signature),
+    std::move(inferred_function_schema),
+    std::move(debug)
+  );
+
+  ++op.operatorDef_->def_and_impl_count;
+
+  cond_var_.notify_all();
+
+  return RegistrationHandleRAII([this, op, op_name, dispatch_key, handle] {
+    deregisterImpl_(op, op_name, dispatch_key, handle);
+  });
+}
 ```
 
 ```c++
