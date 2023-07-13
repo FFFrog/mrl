@@ -252,8 +252,7 @@
     },
     {
         "key": "alt+e",
-        "command": "workbench.action.gotoSymbol",
-        "when": "editorTextFocus"
+        "command": "workbench.action.gotoSymbol"
     },
     {
         "key": "shift+cmd+o",
