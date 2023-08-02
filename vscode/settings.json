@@ -3,8 +3,12 @@
     "update.mode": "manual",
     "update.showReleaseNotes": false,
 
-    //security
+    //security settings
     "security.workspace.trust.enabled": false,
+
+    //window settings
+    "window.titleBarStyle":"custom",
+    "window.commandCenter": false,
 
     //workbench settings
     "workbench.iconTheme": "material-icon-theme",
@@ -14,6 +18,7 @@
     "workbench.editor.showTabs": false,
     "workbench.editor.enablePreview": false,
     "workbench.editor.untitled.hint": "hidden",
+    "workbench.layoutControl.enabled": false,
 
     //explorer settings
     "explorer.confirmDelete": false,
