@@ -116,12 +116,9 @@
         "MD033": false
     },
 
-    //cpplint settings
-    "cpplint.cpplintPath": "/opt/homebrew/Cellar/pyenv/2.0.0/versions/3.9.5/bin/cpplint",
-
     //c_cpp settings
     "C_Cpp.default.cStandard": "c11",
-    "C_Cpp.default.cppStandard": "c++11",
+    "C_Cpp.default.cppStandard": "c++20",
     "C_Cpp.default.intelliSenseMode": "macos-clang-arm64",
     "C_Cpp.default.browse.limitSymbolsToIncludedHeaders": true,
     "C_Cpp.intelliSenseEngine": "default",
@@ -151,37 +148,8 @@
         "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks"
     ],
 
-    //go settings
-    "go.gopath": "~/.go",
-    "go.toolsGopath": "~/.go",
-    "go.toolsEnvVars": {
-        "GOPROXY": "https://goproxy.cn,direct",
-        "GOSUMDB": "sum.golang.google.cn",
-        "GO111MODULE": "on"
-    },
-    "go.editorContextMenuCommands": {
-        "toggleTestFile": false,
-        "addTags": false,
-        "testAtCursor": false,
-        "generateTestForFunction": false,
-        "addImport": false,
-        "testCoverage": false,
-        "playground": false,
-        "debugTestAtCursor": false
-    },
-
     //python settings
-    "python.linting.enabled": true,
-    "python.linting.pylintEnabled": false,
-    "python.linting.flake8Enabled": true,
-    "python.linting.flake8Args": [
-        "--max-line-length=256"
-    ],
-    "python.formatting.provider": "yapf",
-    "python.formatting.yapfArgs": [
-        "--style", "{column_limit: 128}"
-    ],
+    "python.analysis.typeCheckingMode": "basic",
     "python.terminal.activateEnvironment": false,
-    "python.envFile": "${workspaceFolder}/.vscode/.env",
-    "python.defaultInterpreterPath": "/opt/homebrew/Cellar/pyenv/2.0.0/versions/3.9.5/bin/python"
+    "python.envFile": "${workspaceFolder}/.vscode/.env"
 }
