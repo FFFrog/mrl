@@ -151,5 +151,5 @@
     //python settings
     "python.analysis.typeCheckingMode": "basic",
     "python.terminal.activateEnvironment": false,
-    "python.envFile": "${workspaceFolder}/.vscode/.env"
+    "python.envFile": "${workspaceFolder}/.vscode/env"
 }
