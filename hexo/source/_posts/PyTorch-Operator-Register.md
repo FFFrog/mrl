@@ -1,3 +1,11 @@
+---
+title: PyTorch Operator Register
+date: 2023-11-09 10:27:53
+categories: PyTorch
+tags: Dispatcher
+keywords: PyTorch Operator Register
+---
+
 # The Implementation of Registration&&Call of Operators
 
 ```c++
@@ -651,3 +659,4 @@ private:
   DispatchStubImpl impl;
 };
 ```
+

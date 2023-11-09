@@ -1,3 +1,11 @@
+---
+title: How to Debug Linux Kernel
+date: 2023-11-08 16:43:27
+categories: Linux
+tags: Kernel
+keywords: Kernel Debug, Qemu
+---
+
 # How to Debug Linux Kernel
 
 ## 编译内核
@@ -384,3 +392,4 @@ gdb
         ]
     }
     ```
+

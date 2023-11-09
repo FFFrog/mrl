@@ -1,3 +1,11 @@
+---
+title: PyTorch Dispatcher Mechansim
+date: 2023-11-09 10:17:25
+categories: PyTorch
+tags: Dispatcher
+keywords: PyTorch Dispatcher
+---
+
 # The Implementation of Dispatcher
 
 ## DispatchKey
@@ -61,7 +69,7 @@ constexpr DispatchKeySet(Full)
 
 ## Dispatcher
 
-![Dispatcher Table](../../images/Dispatcher_table.png)
+![Dispatcher Table](/images/Dispatcher_table.png)
 
 ```Python
 import torch
@@ -83,4 +91,5 @@ z = x + y
  [redispatch] op=[aten::add.Tensor], key=[CPU]
 ```
 
-![Dispatcher Key](../../images/Dispatcher_key.png)
+![Dispatcher Key](/images/Dispatcher_key.png)
+

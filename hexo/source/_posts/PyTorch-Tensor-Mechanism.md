@@ -1,3 +1,11 @@
+---
+title: PyTorch Tensor Mechanism
+date: 2023-11-09 10:30:48
+categories: PyTorch
+tags: Tensor
+keywords: PyTorch Tensor
+---
+
 # PyTorch
 
 ## The Components of PyTorch
@@ -95,7 +103,7 @@ typedef struct {
 } PyFloatObject;
 ```
 
-![PyFloatObject](../../images/PyFloatObject.jpeg)
+![PyFloatObject](/images/PyFloatObject.jpeg)
 
 ```c
 typedef struct {
@@ -105,7 +113,7 @@ typedef struct {
 } PyListObject;
 ```
 
-![PyListObject](../../images/PyListObject.jpeg)
+![PyListObject](/images/PyListObject.jpeg)
 
 ```c
 typedef struct _typeobject {
@@ -128,7 +136,7 @@ typedef struct _typeobject {
 } PyTypeObject;
 ```
 
-![PyObjectRelation](../../images/PyObjectRelation.jpeg)
+![PyObjectRelation](/images/PyObjectRelation.jpeg)
 
 ## Pytorch Tensor
 
@@ -597,3 +605,4 @@ inline Return callUnboxedKernelFunction(void* unboxed_kernel_func, OperatorKerne
     return (*func)(functor, dispatchKeySet, std::forward<Args>(args)...);
 }
 ```
+
