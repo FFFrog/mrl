@@ -6,8 +6,6 @@ tags: Dispatcher
 keywords: PyTorch Operator Register
 ---
 
-# The Implementation of Registration&&Call of Operators
-
 ```c++
 class TorchLibraryInit final {
 private:
@@ -659,4 +657,3 @@ private:
   DispatchStubImpl impl;
 };
 ```
-

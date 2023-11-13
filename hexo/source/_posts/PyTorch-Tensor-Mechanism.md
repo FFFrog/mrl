@@ -6,8 +6,6 @@ tags: Tensor
 keywords: PyTorch Tensor
 ---
 
-# PyTorch
-
 ## The Components of PyTorch
 
 | Module | Detail | Description |
@@ -103,7 +101,7 @@ typedef struct {
 } PyFloatObject;
 ```
 
-![PyFloatObject](/images/PyFloatObject.jpeg)
+![PyFloatObject](https://i.mji.rip/2023/11/13/e68e232289578d6e942dd12f06f9bf4b.png)
 
 ```c
 typedef struct {
@@ -113,7 +111,7 @@ typedef struct {
 } PyListObject;
 ```
 
-![PyListObject](/images/PyListObject.jpeg)
+![PyListObject](https://i.mji.rip/2023/11/13/e7c58d821b844af127cd7b096ea5bcb3.png)
 
 ```c
 typedef struct _typeobject {
@@ -136,7 +134,7 @@ typedef struct _typeobject {
 } PyTypeObject;
 ```
 
-![PyObjectRelation](/images/PyObjectRelation.jpeg)
+![PyObjectRelation](https://i.mji.rip/2023/11/13/920def9cfb668f1e512ceeba1c6afd00.png)
 
 ## Pytorch Tensor
 
@@ -605,4 +603,3 @@ inline Return callUnboxedKernelFunction(void* unboxed_kernel_func, OperatorKerne
     return (*func)(functor, dispatchKeySet, std::forward<Args>(args)...);
 }
 ```
-

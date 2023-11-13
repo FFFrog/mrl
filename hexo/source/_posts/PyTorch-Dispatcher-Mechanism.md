@@ -6,8 +6,6 @@ tags: Dispatcher
 keywords: PyTorch Dispatcher
 ---
 
-# The Implementation of Dispatcher
-
 ## DispatchKey
 
 ```C++
@@ -69,7 +67,7 @@ constexpr DispatchKeySet(Full)
 
 ## Dispatcher
 
-![Dispatcher Table](/images/Dispatcher_table.png)
+![Dispatcher Table](https://i.mji.rip/2023/11/13/83d05eaa581c4478e44fb0056d52de75.png)
 
 ```Python
 import torch
@@ -91,5 +89,4 @@ z = x + y
  [redispatch] op=[aten::add.Tensor], key=[CPU]
 ```
 
-![Dispatcher Key](/images/Dispatcher_key.png)
-
+![Dispatcher Key](https://i.mji.rip/2023/11/13/00850b944cf2fdf343095022eb7b59a2.png)

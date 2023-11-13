@@ -6,8 +6,6 @@ tags: Kernel
 keywords: Kernel Debug, Qemu
 ---
 
-# How to Debug Linux Kernel
-
 ## 编译内核
 
 1. 下载kernel代码，切换至目标tag
@@ -392,4 +390,3 @@ gdb
         ]
     }
     ```
-
