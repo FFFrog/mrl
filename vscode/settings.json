@@ -149,6 +149,9 @@
     ],
 
     //python settings
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
     "python.analysis.typeCheckingMode": "basic",
     "python.terminal.activateEnvironment": false,
     "python.envFile": "${workspaceFolder}/.vscode/env"
