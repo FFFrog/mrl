@@ -92,7 +92,7 @@ for _ in range(1):
 
 ### 基于 Dispatcher 的注册以及分发(autocast)
 
-![AMP Overview](https://i.mji.rip/2023/11/13/25e16113adfc4eef0fd1226b07560354.png)
+![AMP Overview](https://i.miji.bid/2023/11/24/0fbd960495c06d2bdb5f33c3556a0e1a.png)
 
 TLS中的DispatchKeySet中插入Autocast Key
 
@@ -102,7 +102,7 @@ TLS中的DispatchKeySet中插入Autocast Key
 ...
 ```
 
-![Include](https://i.mji.rip/2023/11/13/9c9845f3c4595177c2c6d193d731a8a1.png)
+![Include](https://i.miji.bid/2023/11/24/c831f58e0e26f9b8624776717405d7a4.png)
 
 前向forward开始
 
@@ -112,7 +112,7 @@ TLS中的DispatchKeySet中插入Autocast Key
 ...
 ```
 
-![Before](https://i.mji.rip/2023/11/13/a029abbe5a256c6ad9189dd677e3cb1d.png)
+![Before](https://i.miji.bid/2023/11/24/6fd38607e311af2c866cab6c32274fc9.png)
 
 Autocast 的CUDA实现（lower_precision_fp)
 
@@ -148,11 +148,11 @@ struct WrapFunction_<
         get_autocast_dispatch_key_from_device_type(device_type));
 ```
 
-![Exclude](https://i.mji.rip/2023/11/13/8811752a51c2d81675e12a0309f8e4a8.png)
+![Exclude](https://i.miji.bid/2023/11/24/5669ecec5cff9b8078cb2a2454d77115.png)
 
 转向后续处理(autograd, 算子真实的cuda实现)
 
-![After](https://i.mji.rip/2023/11/13/38629f5461550e6dddb7a49a445798dc.png)
+![After](https://i.miji.bid/2023/11/24/a740c9b564e13c9c53678a2c1189e612.png)
 
 ### 如何解决float16自身精度引入的溢出问题？
 
@@ -162,7 +162,7 @@ Float16 表示的范围较窄，大量非 0 梯度会遇到溢出问题。
 
 ### 梯度缩放(GradScaler)
 
-![Percentage of all activation gradient values](https://i.mji.rip/2023/11/13/b0511019b1248ee112ed9b879a17cf9a.jpeg)
+![Percentage of all activation gradient values](https://i.miji.bid/2023/11/24/4b0719b29789d1ac24d02e9400d6455d.png)
 
 解决方法：
 在反向传播之前，给loss乘以一个scaler factor，将会导致反向传播中的每个grad都乘以了相同的scaler factor，变相增加了float16可表示小数的范围，从而解决float16精度丢失的问题。
