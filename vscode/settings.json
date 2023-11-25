@@ -13,11 +13,11 @@
     //workbench settings
     "workbench.iconTheme": "material-icon-theme",
     "workbench.colorTheme": "One Dark Pro Darker",
-    "workbench.activityBar.visible": false,
+    "workbench.activityBar.location": "hidden",
     "workbench.startupEditor": "none",
-    "workbench.editor.showTabs": false,
+    "workbench.editor.showTabs": "single",
     "workbench.editor.enablePreview": false,
-    "workbench.editor.untitled.hint": "hidden",
+    "workbench.editor.empty.hint": "hidden",
     "workbench.layoutControl.enabled": false,
 
     //explorer settings
