@@ -14,7 +14,7 @@ email: ljw1101.vip@gmail.com
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://fffrog.github.io
+url: https://fffrog.github.io/mrl/
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
@@ -104,5 +104,5 @@ theme: butterfly
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
   type: git
-  repo: git@github.com:FFFrog/FFFrog.github.io.git
-  branch: main
+  repo: git@github.com:FFFrog/mrl.git
+  branch: gh-pages

@@ -1,1 +1,8 @@
+# mac
 .DS_Store
+
+# hexo
+hexo/.deploy_git/
+hexo/db.json
+hexo/node_modules/
+hexo/public/
