@@ -12,12 +12,15 @@ int get(int a, int& b)
     return a + b;
 }
 
+int x = 10;
+
 int main()
 {
     cout << boost::typeindex::type_id_with_cvr<decltype(get)>().pretty_name() << std::endl;
     cout << boost::typeindex::type_id_with_cvr<decltype(&get)>().pretty_name() << std::endl;
     cout << boost::typeindex::type_id_with_cvr<decltype(&set<int>)>().pretty_name() << std::endl;
     cout << boost::typeindex::type_id_with_cvr<decltype(&set<double>)>().pretty_name() << std::endl;
+    cout << boost::typeindex::type_id_with_cvr<decltype(x)>().pretty_name() << std::endl;
 
     printf("%p\n", get);
     printf("%p\n", &get);
