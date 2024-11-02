@@ -1,3 +1,3 @@
 #include <iostream>
 
-void prepare();
+void addBase();

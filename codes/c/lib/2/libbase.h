@@ -1,3 +1,3 @@
 #include <iostream>
 
-void getValue();
+void addBase();

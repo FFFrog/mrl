@@ -12,31 +12,33 @@ int main() {
 
     // Case 1:
     // ignore the error logic
-    h1 = dlopen("./lib2.so", RTLD_NOW | RTLD_LOCAL);
-    std::cout << "h1:------------" << std::endl;
-    func f1 = (func)dlsym(h1, "_Z7preparev");
-    std::cout << "f1:------------" << std::endl;
+    std::cout << "Load Start: liba.so" << std::endl;
+    h1 = dlopen("./liba.so", RTLD_NOW | RTLD_GLOBAL);
+    std::cout << "Load End: liba.so" << std::endl;
+
+    func f1 = (func)dlsym(h1, "_Z4addAv");
+
+    std::cout << "Run Start: liba.so" << std::endl;
     f1();
+    std::cout << "Run End: liba.so" << std::endl;
 
     // ignore the error logic
-    h2 = dlopen("./lib1.so", RTLD_NOW | RTLD_LOCAL);
-    std::cout << "h2:------------" << std::endl;
-    func f2 = (func)dlsym(h2, "_Z4add1v");
-    std::cout << "f2:------------" << std::endl;
+    std::cout << "Load Start: libb.so" << std::endl;
+    h2 = dlopen("./libb.so", RTLD_NOW | RTLD_LOCAL);
+    std::cout << "Load End: libb.so" << std::endl;
+
+    func f2 = (func)dlsym(h2, "_Z4addBv");
+
+    std::cout << "Run Start: libb.so" << std::endl;
     f2();
+    std::cout << "Run End: libb.so" << std::endl;
 
-    // Case 2:
-    // ignore the error logic
-    // h1 = dlopen("./lib2.so", RTLD_NOW | RTLD_LOCAL);
-    // std::cout << "h1:------------" << std::endl;
-    // func f1 = (func)dlsym(h1, "_Z7preparev");
-    // std::cout << "f1:------------" << std::endl;
-    // f1();
 
     // Case:
-    // dlclose(h1);
+    dlclose(h1);
     dlclose(h2);
 
     std::cout << "main end" << std::endl;
+
     return 0;
 }
