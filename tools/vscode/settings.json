@@ -68,6 +68,7 @@
     },
 
     //debug settings
+    "debug.inlineValues": "off",
     "debug.onTaskErrors": "abort",
     "debug.console.fontSize": 13,
     "debug.console.closeOnEnd": true,
