@@ -1,18 +1,20 @@
+import os
+
 g_value = 1
 
 
-class Code:
+class Base:
     def __init__(self):
         super().__init__()
 
-    def outer(self, local_arg1, local_closure1):
+    def outer(self, arg_1, closure_1):
         global g_value
         g_value = 10
 
-        local_arg2 = 1
-        local_colsure2 = local_arg1 + local_arg2
+        arg_2 = 1
+        colsure_2 = arg_1 + arg_2
 
         def inner():
-            return local_closure1 + local_colsure2
+            return closure_1 + colsure_2
 
         return inner

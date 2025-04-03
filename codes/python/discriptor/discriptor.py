@@ -14,17 +14,17 @@ class Descriptor:
         print('__set__(): Setting x on the object', instance)
 
 
-class Foo:
-    x = Descriptor()
+class Base:
+    value = Descriptor()
 
 
-f = Foo()
+base = Base()
 
-print(Foo.x)
-print(type(Foo.x))
+print(Base.value)
+print(type(Base.value))
 
-print(Foo.x.__get__)
-print(type(Foo.x.__get__))
+print(Base.value.__get__)
+print(type(Base.value.__get__))
 
-print(f.x)
-print(type(f.x))
+print(base.value)
+print(type(base.value))
